@@ -12,7 +12,7 @@ function checkForAuthenticationCookie(cookieName){
         try{
             const userPayload=validateToken(tokenCookieValue)
             req.user=userPayload
-            console.log(req.user,"this is user of middlewere");
+           
             
 
         }
