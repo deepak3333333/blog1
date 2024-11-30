@@ -4,13 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <%- include('./partials/head') %>
-    <title>HOme</title>
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .blog-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .blog-title {
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .blog-body {
+            margin: 10px 0;
+            color: #555;
+        }
+        .blog-meta {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        .blog-image {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .read-more-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .read-more-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-   
-    
     <%- include('./partials/navbar') %>
-  
+
+    <div class="container">
+        <h1 style="grid-column: 1 / -1;">Blog Home</h1>
+        <% if (blogs.length > 0) { %>
+            <% blogs.forEach(blog => { %>
+                <div class="blog-card">
+                    <h2 class="blog-title"><%= blog.title %></h2>
+                    <p class="blog-body"><%= blog.body.substring(0, 100) %>...</p>
+                    <% if (blog.coverImageUrl) { %>
+                        <img src="<%= blog.coverImageUrl %>" alt="<%= blog.title %>" class="blog-image">
+                    <% } %>
+                    <p class="blog-meta">Created at: <%= new Date(blog.createdAt).toLocaleString() %></p>
+                    <a href="/blog/<%= blog._id %>" class="read-more-btn">Read More</a>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p style="grid-column: 1 / -1;">No blogs available.</p>
+        <% } %>
+    </div>
+
     <%- include('./partials/footer') %>
     <%- include('./partials/bottom') %>
 </body>
