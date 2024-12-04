@@ -1,14 +1,15 @@
 const express=require("express")
-const port=580
+const port=582
 const path=require("path")
 
 const userrouter=require("./routers/user")
 const blogrouter=require("./routers/blog")
+const Blog = require("./models/blog")
 
 var cookieParser = require('cookie-parser')
 const { default: mongoose } = require("mongoose")
 const { checkForAuthenticationCookie } = require("./middleware/authentication")
-const Blog = require("./models/blog")
+
 mongoose.connect("mongodb://localhost:27017/blog1")
 .then(()=>{
     console.log("connected")

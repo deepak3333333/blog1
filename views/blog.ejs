@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .trending-label {
+            display: inline-block;
+            background-color: #ff5733;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 20px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+        }
+
+        .blog-card {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .blog-card img {
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .blog-card-body {
+            padding: 20px;
+        }
+
+        .blog-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .blog-text {
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .blog-footer {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .user-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .user-info .username {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+    </style>
+    <%- include('./partials/head') %>
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+
+    <!-- Blog Content -->
+    <div class="container my-5">
+        <div class="blog-card card">
+            <!-- Trending Label -->
+            <div class="trending-label">Trending</div>
+            <!-- Blog Cover Image -->
+            <img src="<%= blog.coverImageUrl %>" class="card-img-top" alt="Blog Cover Image">
+            <!-- Blog Content -->
+            <div class="blog-card-body">
+                <h1 class="blog-title"><%= blog.title %></h1>
+                <h1 class="blog-title"><%= blog._id %></h1>
+
+
+                <p class="blog-text"><%= blog.body %></p>
+                <p class="blog-footer">Created at: <%= new Date(blog.createdAt).toLocaleDateString() %></p>
+                <!-- User Information -->
+                <div class="user-info">
+                    <img src="<%= blog.createdBy.profileImageUrl %>" alt="User Profile Image">
+                    <p><%= blog.createdBy.email %></p>
+                    <div>
+                        <p class="username"><%= blog.createdBy.username %></p>
+                    </div>
+                </div>
+            </div>
+
+            <% if (locals.user) { %>
+                <div style="margin-top: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
+                    <form   action="/blog/comment/<%= blog.id %>" method="post"  style="display: flex; align-items: center;">
+                        <input 
+                            type="text" 
+                            name="content" 
+                            placeholder="Add a comment" 
+                            style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 1rem; margin-right: 10px;"
+                        >
+                        <button 
+                            type="submit" 
+                            style="padding: 10px 20px; border: none; background-color: #007bff; color: white; font-size: 1rem; border-radius: 5px; cursor: pointer;"
+                        >
+                            Submit
+                        </button>
+                    </form>
+                </div>
+             
+            <% } %>
+            
+            
+        </div>
+        <div style="max-width: 900px; margin: 40px auto; padding: 20px; background: #fff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);">
+            <h1 style="text-align: center; font-size: 2rem; margin-bottom: 30px; color: #444;">Blog Comments<%= comments.length %></h1>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+              <% comments.forEach(comment => { %>
+                <li style="position: relative; padding: 15px; margin-bottom: 20px; background: #f9f9ff; border-left: 5px solid #6c63ff; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); transition: transform 0.2s, background-color 0.3s;">
+                  <p style="font-size: 1.2rem; color: #333; margin-bottom: 8px;"><%= comment.content %></p>
+                  <p style="font-size: 0.9rem; color: #555; font-style: italic; text-align: right; margin: 0;">— <%= comment.commentBy.username %></p>
+                  <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+                    <button style="padding: 5px 10px; font-size: 0.9rem; color: white; background-color: #6c63ff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;"
+                      onmouseover="this.style.backgroundColor='#574fdb'" onmouseout="this.style.backgroundColor='#6c63ff'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+                      Like
+                    </button>
+                    <button style="padding: 5px 10px; font-size: 0.9rem; color: white; background-color: #6c63ff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;"
+                      onmouseover="this.style.backgroundColor='#574fdb'" onmouseout="this.style.backgroundColor='#6c63ff'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+                      Reply
+                    </button>
+                  </div>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+          
+        
+    </div>
+   
+
+    <%- include('./partials/footer') %>
+    <%- include('./partials/bottom') %>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

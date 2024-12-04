@@ -19,7 +19,10 @@
                 <a class="nav-link" href="/user/signin">Login</a>
             </li>
         <% } %>
-        <% if (locals.user) { %>             
+        <% if (locals.user) { %>   
+          <li>
+          
+          </li>          
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <%= JSON.stringify(user.user) %>
